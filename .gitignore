@@ -1,2 +1,22 @@
-/.project
+#### Application 
 /venv
+
+
+#### Python
+*.py[cod]
+*.so
+*.mo
+
+
+#### Common
+.DS_Store
+
+
+### IDE
+/.pydevproject
+/.project
+
+
+
+
+
