@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en" ng-app="{{ app_name }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>motdable: {{ app_name }}</title>
+  
+  <!-- jQuery [for Twitter Bootstrap] -->
+  <script src="//code.jquery.com/jquery.js"></script>
+  
+  <!-- Bootstrap 3 -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+   
+  <!-- Angular 1.0.8 -->
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular-resource.min.js"></script>
+  
+  <!-- Application Styling -->
+  <link rel="stylesheet" href="{{ STATIC_URL }}/{{ app_name }}/css/style.css">
+  
+  <!--  Application Runtime -->
+  <script type="text/javascript">BASE_URL = "{{ STATIC_URL }}{{ app_name }}/";</script>
+  <script src="{{ STATIC_URL }}/{{ app_name }}/js/app.js"></script>
+  <script src="{{ STATIC_URL }}/{{ app_name }}/js/controllers.js"></script>
+  <script src="{{ STATIC_URL }}/{{ app_name }}/js/services.js"></script>
+  
+</head>
+<body>
+	<div ng-view></div>
+</body>
+</html>

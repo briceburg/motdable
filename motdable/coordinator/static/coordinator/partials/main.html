@@ -1,0 +1,64 @@
+<div class="row">
+	<div class="col-md-6">
+	  	
+	  	<div class="panel panel-primary">
+			<div class="panel-heading">
+	    		<h3 class="panel-title">Players <a href="/api/players">[ Manage ]</a></h3>
+	  		</div>
+			<div class="panel-body">
+				<ul ng-repeat="item in players" class="nav nav-pills nav-stacked">
+					<li ng-hide="players.length">No Players Loaded</li>
+					
+					<li ng-class="{active: item.id==selectedPlayer}">
+						<a ng-click="selectItem(item.id, 'Player')" href="javascript:">{{item.hostname}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+  	
+  	</div>
+  	
+	<div class="col-md-6">
+		<div class="panel panel-info">
+			<div class="panel-heading">
+	    		<h3 class="panel-title">Play Calls <a href="/api/playcalls" class="alt">[ Manage ]</a></h3>
+	  		</div>
+			<div class="panel-body">
+				<ul ng-repeat="item in playcalls" class="nav nav-pills nav-stacked">
+					<li ng-hide="playcalls.length">No Play Calls Loaded</li>
+					
+					<li ng-class="{active: item.id==selectedPlayCall}"
+						ng-click="selectItem(item.id, 'PlayCall')"><a href="javascript:">{{item.title}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+	    		<h3 class="panel-title">Play Execution</h3>
+	  		</div>
+			<div class="panel-body">
+				<span ng-hide="canExecute">Be sure to select your player and call above.</span>
+				
+				<h3>
+					Ready? 
+					<span class="label label-danger go-button" 
+						ng-show="canExecute"
+						ng-click="execute">Go</span>
+				</h3>
+				
+				
+				
+				
+			</div>
+		</div>
+	
+	</div>
+</div>
+	
+	
