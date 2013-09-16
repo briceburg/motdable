@@ -9,8 +9,19 @@ class PlayCall(models.Model):
     
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey('auth.User', related_name='playcalls')
-    title = models.CharField(max_length=100, blank=True, default='')
+    title = models.CharField(max_length=100, blank=False, default='')
     playbook = models.TextField()
+    
+class PlayCallOption(models.Model):
+    """
+    Passed to ansible playbooks as extra-vars, using title as the variable
+    name and a <value> supplied by coordinator at runtime.
+    """
+    
+    created = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey('auth.User', related_name='playcalloptions')
+    title = models.CharField(max_length=100, blank=False, default='')
+    playcalls = models.ManyToManyField(PlayCall, related_name='options')
 
 
 class Player(models.Model):

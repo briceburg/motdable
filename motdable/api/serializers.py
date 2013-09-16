@@ -11,13 +11,24 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'id', 'hostname', 'login_username', 'login_private_key', 'owner')
         
         
-class PlayCallSerializer(serializers.HyperlinkedModelSerializer):
-   
+class PlayCallOptionSerializer(serializers.HyperlinkedModelSerializer):
+    
+    playcalls = serializers.SlugRelatedField(many=True, slug_field='title', required=False)   
+    
     class Meta:
+        model = PlayCallOption
+        fields = ('url', 'id', 'title', 'playcalls', 'owner')
+        
+
+class PlayCallSerializer(serializers.HyperlinkedModelSerializer):
+    
+   options = serializers.SlugRelatedField(many=True, slug_field='title', required=False)
+    
+   class Meta:
         model = PlayCall
         fields = ('url', 'id', 'title', 'playbook', 'options', 'owner')
 
-
+        
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
