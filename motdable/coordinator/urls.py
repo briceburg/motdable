@@ -5,5 +5,5 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('coordinator.views',
-    url(r'^', 'index')
+    url(r'^', 'index', name="catchall")
 )

@@ -16,5 +16,6 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     
     url(r'^api/', include('api.urls')),
-    url(r'^coordinator/', include('coordinator.urls'))
+    url(r'^coordinator/', include('coordinator.urls')),
+    url(r'^', 'coordinator.views.catchall')
 )
