@@ -10,7 +10,7 @@
 					<li ng-hide="players.length">No Players Loaded</li>
 					
 					<li ng-class="{active: item.id==selectedPlayer}">
-						<a ng-click="selectItem(item.id, 'Player')" href="javascript:">{{item.hostname}}</a>
+						<a ng-click="selectItem(item.id, 'Player', null)" href="javascript:">{{item.hostname}}</a>
 					</li>
 				</ul>
 			</div>
@@ -28,7 +28,7 @@
 					<li ng-hide="playcalls.length">No Play Calls Loaded</li>
 					
 					<li ng-class="{active: item.id==selectedPlayCall}"
-						ng-click="selectItem(item.id, 'PlayCall')"><a href="javascript:">{{item.title}}</a>
+						ng-click="selectItem(item.id, 'PlayCall', item.options)"><a href="javascript:">{{item.title}}</a>
 					</li>
 				</ul>
 			</div>
@@ -44,6 +44,19 @@
 	  		</div>
 			<div class="panel-body">
 				<span ng-hide="canExecute">Be sure to select your player and call above.</span>
+				
+				<div id="playbook-options" ng-show="options.length">
+					<h3>Call Options: <span class="small">(aka ansible variables)</span></h3>
+					
+					<h6>The following variables will be passed to your Play Call. Please provide values.</h6>
+					
+					
+					<div class="input-group" ng-repeat="item in options">
+						<span class="input-group-addon">{{ item }}</span>
+						<input type="text" class="form-control" name="{{ item }}" />
+					</div>
+					
+				</div>
 				
 				<h3>
 					Ready? 

@@ -16,11 +16,17 @@ function MainCtrl($scope, Players, PlayCalls) {
 	});
 	
 	// multimethod for toggling selection of current player/playcall
-	$scope.selectItem = function(id, type){
+	$scope.selectItem = function(id, type, options){
 		var property = 'selected' + type;
 		$scope[property] = ($scope[property] == id) ? null : id;
 		
 		$scope.canExecute = ($scope.selectedPlayer && $scope.selectedPlayCall);
+		
+		$scope.options = [];
+		if(type == 'PlayCall' && $scope[property])
+		{
+			$scope.options = options
+		}
 	}
 	
 	// method for executing a playcall against a player
