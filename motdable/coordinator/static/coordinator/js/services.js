@@ -2,7 +2,8 @@
 
 /* Services */
 
-angular.module('ApiService', ['ngResource'])
+angular.module('coordinator.services', ['ngResource'])
+	.value('version', '0.1')
 	.factory('PlayCalls', function($resource){
 		return $resource('/api/playcalls/.json');
 	})
