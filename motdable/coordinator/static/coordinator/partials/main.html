@@ -40,7 +40,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-	    		<h3 class="panel-title">Play Execution</h3>
+	    		<h3 class="panel-title">Play Execution <span app-version></span></h3>
 	  		</div>
 			<div class="panel-body">
 				<span ng-hide="canExecute">Be sure to select your player and call above.</span>
@@ -48,12 +48,14 @@
 				<h3>
 					Ready? 
 					<span class="label label-danger go-button" 
+						ng-class="{executing: isExecuting}"
 						ng-show="canExecute"
-						ng-click="execute">Go</span>
+						ng-click="execute()">Go</span>
 				</h3>
 				
-				
-				
+				<div id="playbook-output">
+					<loading-indicator is-executing="isExecuting"></loading-indicator>
+				</div>
 				
 			</div>
 		</div>

@@ -9,17 +9,25 @@ function MainCtrl($scope, Players, PlayCalls) {
 		$scope.selectedPlayer = null;
 	});
 	
+	// populate playcall list from django rest-framework
 	PlayCalls.query(function(data){
 		$scope.playcalls = data;
 		$scope.selectedPlayCall = null;
 	});
 	
-	// methods for toggling selection of current player/playcall
+	// multimethod for toggling selection of current player/playcall
 	$scope.selectItem = function(id, type){
 		var property = 'selected' + type;
 		$scope[property] = ($scope[property] == id) ? null : id;
 		
 		$scope.canExecute = ($scope.selectedPlayer && $scope.selectedPlayCall);
-		console.log($scope.canExecute);
+	}
+	
+	// method for executing a playcall against a player
+	$scope.execute = function(){
+		if(!$scope.canExecute) return alert('Please select a Player and Play Call first.');
+		if($scope.isExecuting) return;
+		
+		$scope.isExecuting = true;		
 	}
 }

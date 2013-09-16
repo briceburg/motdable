@@ -2,3 +2,4 @@ h3.panel-title a {color: #dfdfdf; text-decoration: none; padding-left: 2em; font
 h3.panel-title a.alt {color: #0A577D;}
 
 span.go-button {cursor: pointer;}
+span.go-button.executing {background-color: #888;}
