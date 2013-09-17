@@ -60,14 +60,23 @@ these via an XHR call to the playbook executer under **motdable/coordinator/view
   vi settings.py
   ```
   
-0. setup the initial database and superuser [TODO: provide a fixture/migration for demo]
+0. setup the initial database and superuser
   ```
   cd $application_root
   venv/bin/python motdable/manage.py syncdb
   ```
 
+0. *optional* load initial fixture (includes working playbooks)
+  ```
+  cd $application_root
+  venv/bin/python motdable/manage.py syncdb motdable/iceburg.json
+  ```
 
 ### Usage
+
+**NOTE**: If you loaded the initial fixture, the superuser credentials are:
+  username: ansible
+  password: ansible!
 
 0. run the django server
   ```
