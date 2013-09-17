@@ -1,39 +1,39 @@
 from rest_framework import serializers
 
-from api.models import Player, PlayCall, PlayCallOption
+from api.models import Host, Playbook, PlaybookVariable
 from django.contrib.auth.models import User
 
 
-class PlayerSerializer(serializers.HyperlinkedModelSerializer):
+class HostSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = Player
+        model = Host
         fields = ('url', 'id', 'hostname', 'login_username', 'private_key_file', 'owner')
         
         
-class PlayCallOptionSerializer(serializers.HyperlinkedModelSerializer):
+class PlaybookVariableSerializer(serializers.HyperlinkedModelSerializer):
     
-    playcalls = serializers.SlugRelatedField(many=True, slug_field='title', required=False)   
+    playbooks = serializers.SlugRelatedField(many=True, slug_field='title', required=False)   
     
     class Meta:
-        model = PlayCallOption
-        fields = ('url', 'id', 'title', 'playcalls', 'owner')
+        model = PlaybookVariable
+        fields = ('url', 'id', 'title', 'playbooks', 'owner')
         
 
-class PlayCallSerializer(serializers.HyperlinkedModelSerializer):
+class PlaybookSerializer(serializers.HyperlinkedModelSerializer):
     
-   options = serializers.SlugRelatedField(many=True, slug_field='title', required=False)
+   variables = serializers.SlugRelatedField(many=True, slug_field='title', required=False)
     
    class Meta:
-        model = PlayCall
-        fields = ('url', 'id', 'title', 'playbook', 'options', 'owner')
+        model = Playbook
+        fields = ('url', 'id', 'title', 'content', 'variables', 'owner')
 
         
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = User
-        fields = ('url', 'username', 'playcalls', 'players')
+        fields = ('url', 'username', 'playbooks', 'playbookvars', 'hosts')
         
         
         
