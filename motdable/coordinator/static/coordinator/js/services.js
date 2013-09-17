@@ -9,4 +9,13 @@ angular.module('coordinator.services', ['ngResource'])
 	})
 	.factory('Players', function($resource){
 		return $resource('/api/players/.json');
+	})
+	.factory('ExecutePlay', function($http){
+		return {
+			get: function(params){
+				return $http.get('/coordinator/execute/',{
+					params: params
+				});
+			}
+		};
 	});

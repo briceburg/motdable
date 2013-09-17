@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-function MainCtrl($scope, Players, PlayCalls) {
+function MainCtrl($scope, Players, PlayCalls, ExecutePlay) {
 	// populate player list from django rest-framework
 	Players.query(function(data){
 		$scope.players = data;
@@ -34,6 +34,16 @@ function MainCtrl($scope, Players, PlayCalls) {
 		if(!$scope.canExecute) return alert('Please select a Player and Play Call first.');
 		if($scope.isExecuting) return;
 		
-		$scope.isExecuting = true;		
+		$scope.isExecuting = true;
+		
+		ExecutePlay.get({
+			playerId: $scope.selectedPlayer,
+			playcallId: $scope.selectedPlayCall,
+		}).then(function(response){
+			$scope.isExecuting = false;
+			$scope.playbookOutput = response.data.output;
+			console.log(response);
+		});
+		
 	}
 }

@@ -44,4 +44,15 @@ angular.module('coordinator.directives', [])
 		}
 	  };
   })
+  .directive('playbookOutput', function(){
+	  return {
+		restrict: 'E',
+		scope: {playbookOutput: '='},
+		link: function(scope, elm, attrs){
+			scope.$watch('playbookOutput', function(){
+				elm.html(scope.playbookOutput).wrap('<pre></pre>');
+			});
+		}
+	  };
+  })
 ;
