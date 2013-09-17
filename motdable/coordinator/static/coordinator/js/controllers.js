@@ -22,11 +22,17 @@ function MainCtrl($scope, Players, PlayCalls, ExecutePlay) {
 		
 		$scope.canExecute = ($scope.selectedPlayer && $scope.selectedPlayCall);
 		
-		$scope.options = [];
-		if(type == 'PlayCall' && $scope[property])
-		{
-			$scope.options = options
-		}
+        if(type == 'PlayCall')
+        {
+        	$scope.options = [];
+        	
+        	if($scope[property])
+        	{
+	        	angular.forEach(options, function(value, key){
+	        		this.push({name: value, supplied_value: ''});
+	        	}, $scope.options);
+        	}
+        }
 	}
 	
 	// method for executing a playcall against a player
@@ -42,9 +48,18 @@ function MainCtrl($scope, Players, PlayCalls, ExecutePlay) {
 					response.data.output : response.data;
 		};
 		
+		// prepare options, we cannot use ng-repeat (key, value) + ng-model
+		//  which would be more efficient: see http://jsfiddle.net/sirhc/z9cGm/
+		var options = {};
+		angular.forEach($scope.options, function(obj, key){
+    		this[obj.name] = obj.supplied_value;
+    	}, options);
+		
+		
 		ExecutePlay.get({
 			playerId: $scope.selectedPlayer,
 			playcallId: $scope.selectedPlayCall,
+			options: options
 		})
 		// promise.then(successCallback, errorCallback)
 		.then(outputFunc, outputFunc);
