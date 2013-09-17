@@ -15,6 +15,22 @@ It was written on a Sunday, in the spirit of NFL games; so I elected to think of
 as "Play Calls" and hosts as "Players". The interface where you choose the player and call 
 to execute is called the "Coordinator".
 
+Subsequently the program was refactored to use conventional naming, with the note: Sunday != Monday.
+
+
+### Code Overview
+
+Motdable was written in django-rest-framework and packages a AngularJS application to interact
+with playbook execution.
+
+The django-rest-framework application is under **motdable/api**. It provides CRUD management
+of Playbooks and Hosts via its Web Browsable API. Naturally it exposes a REST interface
+which is leveraged by the AngularJS interface.
+
+The AngularJS interface (aka the "Coordinator") is under **motdable/coordinator/static**. It
+allows the selection of playbooks and hosts to run them against, and asynchronously triggers
+these via an XHR call to the playbook executer under **motdable/coordinator/views.py**.
+
 
 ### Installation
 
@@ -59,13 +75,15 @@ to execute is called the "Coordinator".
   venv/bin/python motdable/manage.py runserver
   ```
   
+0. execute your plays via the coordinator interface.
+  ```
+  firefox|chromium http://localhost:8000/
+  firefox|chromium http://localhost:8000/coordinator/
+  ```
+  
 0. manage you hosts and playbooks via the api interface. login as the django admin to gain the ability to post new models. E.g.
   ```
   firefox|chromium http://localhost:8000/api
   ```
-  
-0. execute your plays via the coordinator interface.
-  ```
-  firefox|chromium http://localhost:8000/coordinator/
-  ```
+
 
