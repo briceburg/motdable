@@ -1,6 +1,7 @@
 #### Application 
 /venv
 /motdable/motdable/settings.py
+/motdable/uploads
 tmp.db
 
 
