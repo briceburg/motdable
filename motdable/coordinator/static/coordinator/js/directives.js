@@ -48,9 +48,10 @@ angular.module('coordinator.directives', [])
 	  return {
 		restrict: 'E',
 		scope: {playbookOutput: '='},
+		template: '<pre></pre>',
 		link: function(scope, elm, attrs){
 			scope.$watch('playbookOutput', function(){
-				elm.html(scope.playbookOutput).wrap('<pre></pre>');
+				elm.children(':first').html(scope.playbookOutput);
 			});
 		}
 	  };
