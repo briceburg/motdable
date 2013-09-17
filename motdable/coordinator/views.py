@@ -1,7 +1,7 @@
-from __future__ import print_function
-
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.core.files import File
+
 from api.models import Playbook, Host
 
 import subprocess, sys, json, os
@@ -23,18 +23,15 @@ def execute(request):
     
     if hasattr(sys, 'real_prefix'): 
         
-        # write a temp inventory file, @todo: one-liner?
-        inventory_file = sys.prefix + '/tmp.inventory' 
-        f = open(inventory_file,'w')
-        print('127.0.0.1', file=f)
-        print(host.hostname, file=f)
-        f.close()
-        
-        # write a temp playbook file, @todo: one-liner?
-        playbook_file = sys.prefix + '/tmp.playbook' 
-        f = open(playbook_file,'w')
-        print(playbook.content, file=f)
-        f.close() 
+        # write a temporary inventory file
+        with open(sys.prefix + '/tmp.inventory', 'w') as f:
+            inventory_file = File(f)
+            inventory_file.write("127.0.0.1\n" + host.hostname)
+            
+        # write a temporary playbook file
+        with open(sys.prefix + '/tmp.playbook', 'w') as f:
+            playbook_file = File(f)
+            playbook_file.write(playbook.content)
         
         # create extravars
         extra_vars = json.loads(variables)
@@ -46,11 +43,11 @@ def execute(request):
         # @todo playbook execution should be a celery task / non-blocking call.
         process = subprocess.Popen([
             sys.prefix + '/bin/ansible-playbook',
-            '--inventory-file=' + inventory_file,
+            '--inventory-file=' + inventory_file.name,
             '--user=' + host.login_username,
-            '--private-key=' + host.private_key_file.path(),
+            '--private-key=' + host.private_key_file.path,
             '--extra-vars=' + json.dumps(extra_vars),
-            playbook_file
+            playbook_file.name
         
         ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env_vars)
         
