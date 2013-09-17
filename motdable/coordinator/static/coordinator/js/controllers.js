@@ -36,14 +36,18 @@ function MainCtrl($scope, Players, PlayCalls, ExecutePlay) {
 		
 		$scope.isExecuting = true;
 		
+		var outputFunc = function(response) {
+			$scope.isExecuting = false;
+			$scope.playbookOutput = (response.data.output) ? 
+					response.data.output : response.data;
+		};
+		
 		ExecutePlay.get({
 			playerId: $scope.selectedPlayer,
 			playcallId: $scope.selectedPlayCall,
-		}).then(function(response){
-			$scope.isExecuting = false;
-			$scope.playbookOutput = response.data.output;
-			console.log(response);
-		});
+		})
+		// promise.then(successCallback, errorCallback)
+		.then(outputFunc, outputFunc);
 		
 	}
 }
