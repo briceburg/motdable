@@ -1,27 +1,27 @@
 from rest_framework import permissions
 from rest_framework import viewsets
 
-from api.models import PlayCall, Player, PlayCallOption
-from api.serializers import PlayCallSerializer, PlayCallOptionSerializer, PlayerSerializer, UserSerializer
+from api.models import Playbook, PlaybookVariable, Host
+from api.serializers import HostSerializer, PlaybookVariableSerializer, PlaybookSerializer, UserSerializer
 from api.permissions import IsOwnerOrReadOnly
 
 from django.contrib.auth.models import User
 
 
 
-class PlayCallViewSet(viewsets.ModelViewSet):
+class PlaybookViewSet(viewsets.ModelViewSet):
     """
-    This is a CRUD endpoint for PlayCalls.
+    This is a CRUD endpoint for Playbooks.
     
-    PlayCalls are scripted Plays (aka Ansible Playbooks) that the Coordinator
-    executes against a Player (aka Host).
+    Playbooks are Scripted Plays (aka Ansible Playbooks) that the Coordinator
+    executes against a Host.
     
-    Each PlayCall consists of a title used to reference it, and a playbook
-    which must conform to a valid yaml ansible playbook.
+    Each Playbook consists of a title used to reference it, and content
+    which must represent a valid yaml ansible playbook.
       ( http://www.ansibleworks.com/docs/playbooks.html )
       
-    Additionally you can pass variables to playbooks via PlayCall Options.
-    See the playcalloptions endpoint in our Api Root.
+    You may additionally pass variables to playbooks via PlaybookVariables .
+    See the playbookvars endpoint in our Api Root for management.
       
     NOTE:  
       The ansible playbook MUST use $host_group as its hosts: variable; e.g.
@@ -34,59 +34,57 @@ class PlayCallViewSet(viewsets.ModelViewSet):
     
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     
-    queryset = PlayCall.objects.all()
-    serializer_class = PlayCallSerializer
+    queryset = Playbook.objects.all()
+    serializer_class = PlaybookSerializer
     
     def pre_save(self, obj):
         obj.owner = self.request.user
 
 
-class PlayCallOptionViewSet(viewsets.ModelViewSet):
+class PlaybookVariableViewSet(viewsets.ModelViewSet):
     """
-    This is a CRUD endpoint for PlayCall Options.
+    This is a CRUD endpoint for PlaybookVariables.
     
     Ansible supports passing variables to playbooks via the --extra-vars 
     command argument.
     
-    PlayCall Options are passed to ansible playbooks using <title> as the 
+    PlaybookVariables are passed to ansible playbooks using <title> as the 
     variable name and a <value> supplied by coordinator at runtime.
     
     E.g.
     
-    If you create a PlayCall Option with a title of "message", then...
+    If you create a PlaybookVariable with a title of "message", then...
     
     ansible-playbook playbook.yml --exta-vars="{message: 'supplied_value'}"
     """
     
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     
-    queryset = PlayCallOption.objects.all()
-    serializer_class = PlayCallOptionSerializer
+    queryset = PlaybookVariable.objects.all()
+    serializer_class = PlaybookVariableSerializer
     
     def pre_save(self, obj):
         obj.owner = self.request.user
              
 
-class PlayerViewSet(viewsets.ModelViewSet):
+class HostViewSet(viewsets.ModelViewSet):
     """
-    This is a CRUD endpoint for Players.
+    This is a CRUD endpoint for Hosts.
     
-    PlayCalls target Players (aka Hosts).
-    
-    Each Player consists of a hostname and a login credentials 
+    Each Host consists of a hostname [or IP address] and a login credentials 
     used to access it.
     
-    Playbooks are executed as the login_username.
+    See the hostcredentials endpoint in our Api Root for management.
     
     NOTE:
-      Players use ssh private keys for access. Please ensure these
+      Hosts use ssh private keys for access. Please ensure these
       are appropriately setup for users on the target host.
     """
     
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     
-    queryset = Player.objects.all()
-    serializer_class = PlayerSerializer
+    queryset = Host.objects.all()
+    serializer_class = HostSerializer
     
     def pre_save(self, obj):
         obj.owner = self.request.user

@@ -5,9 +5,9 @@ from api import views
 
 
 router = DefaultRouter()
-router.register(r'playcalls', views.PlayCallViewSet)
-router.register(r'playcalloptions', views.PlayCallOptionViewSet)
-router.register(r'players', views.PlayerViewSet)
+router.register(r'playbooks', views.PlaybookViewSet)
+router.register(r'playbookvars', views.PlaybookVariableViewSet)
+router.register(r'hosts', views.HostViewSet)
 router.register(r'users', views.UserViewSet)
 
 

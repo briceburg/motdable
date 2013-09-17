@@ -2,37 +2,40 @@ from django.db import models
 from api.classes import PrivateKeyStorage
 
 
-class PlayCall(models.Model):
+class Playbook(models.Model):
     """
     Scripted Plays (aka Ansible Playbooks) that the Coordinator
-    executes against a Player
+    executes against a Host.
     """
     
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey('auth.User', related_name='playcalls')
-    title = models.CharField(max_length=100, blank=False, default='')
-    playbook = models.TextField()
+    owner = models.ForeignKey('auth.User', related_name='playbooks')
     
-class PlayCallOption(models.Model):
+    title = models.CharField(max_length=100, blank=False, default='')
+    content = models.TextField()
+    
+class PlaybookVariable(models.Model):
     """
-    Passed to ansible playbooks as extra-vars, using title as the variable
-    name and a <value> supplied by coordinator at runtime.
+    Passed to Playbooks as extra-vars, using title as the variable
+    name and a <value> supplied by Coordinator at runtime.
     """
     
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey('auth.User', related_name='playcalloptions')
+    owner = models.ForeignKey('auth.User', related_name='playbookvars')
+    
     title = models.CharField(max_length=100, blank=False, default='')
-    playcalls = models.ManyToManyField(PlayCall, related_name='options')
+    playbooks = models.ManyToManyField(Playbook, related_name='variables')
 
 
-class Player(models.Model):
+class Host(models.Model):
     """
-    A Player (aka Host, Machine, HostGroup, Server) that the Coordinator 
-    targets with PlayCalls.  
+    A Host (aka Machine, Server) that the Coordinator executes
+    Playbooks agains.  
     """
     
     created = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey('auth.User', related_name='players')
+    owner = models.ForeignKey('auth.User', related_name='hosts')
+    
     hostname = models.CharField(max_length=100, blank=True, default='')
     login_username = models.CharField(max_length=100, default='root')
     private_key_file = models.FileField(upload_to='keys', storage=PrivateKeyStorage())

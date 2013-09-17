@@ -3,14 +3,14 @@
 	  	
 	  	<div class="panel panel-primary">
 			<div class="panel-heading">
-	    		<h3 class="panel-title">Players <a href="/api/players/">[ Manage ]</a></h3>
+	    		<h3 class="panel-title">Hosts <a href="/api/hosts/">[ Manage ]</a></h3>
 	  		</div>
 			<div class="panel-body">
-				<ul ng-repeat="item in players" class="nav nav-pills nav-stacked">
-					<li ng-hide="players.length">No Players Loaded</li>
+				<ul ng-repeat="item in hosts" class="nav nav-pills nav-stacked">
+					<li ng-hide="hosts.length">No Hosts Loaded</li>
 					
-					<li ng-class="{active: item.id==selectedPlayer}">
-						<a ng-click="selectItem(item.id, 'Player')" href="javascript:">{{item.hostname}}</a>
+					<li ng-class="{active: item.id==selectedHost}">
+						<a ng-click="selectItem(item.id, 'Host')" href="javascript:">{{item.hostname}}</a>
 					</li>
 				</ul>
 			</div>
@@ -21,14 +21,14 @@
 	<div class="col-md-6">
 		<div class="panel panel-info">
 			<div class="panel-heading">
-	    		<h3 class="panel-title">Play Calls <a href="/api/playcalls/" class="alt">[ Manage ]</a></h3>
+	    		<h3 class="panel-title">Playbooks <a href="/api/playbooks/" class="alt">[ Manage ]</a></h3>
 	  		</div>
 			<div class="panel-body">
-				<ul ng-repeat="item in playcalls" class="nav nav-pills nav-stacked">
-					<li ng-hide="playcalls.length">No Play Calls Loaded</li>
+				<ul ng-repeat="item in playbooks" class="nav nav-pills nav-stacked">
+					<li ng-hide="playbooks.length">No Playbooks Loaded</li>
 					
-					<li ng-class="{active: item.id==selectedPlayCall}"
-						ng-click="selectItem(item.id, 'PlayCall', item.options)"><a href="javascript:">{{item.title}}</a>
+					<li ng-class="{active: item.id==selectedPlaybook}"
+						ng-click="selectItem(item.id, 'Playbook', item.variables)"><a href="javascript:">{{item.title}}</a>
 					</li>
 				</ul>
 			</div>
@@ -43,14 +43,14 @@
 	    		<h3 class="panel-title">Play Execution <span app-version></span></h3>
 	  		</div>
 			<div class="panel-body">
-				<span ng-hide="canExecute">Be sure to select your player and call above.</span>
+				<span ng-hide="canExecute">Be sure to select your host and playbook above.</span>
 				
-				<div id="playbook-options" ng-show="options">
-					<h3>Call Options: <span class="small">(aka ansible variables)</span></h3>
+				<div id="playbook-variables" ng-show="variables">
+					<h3>Playbook Variables: <span class="small">(passed via ansible extra-vars)</span></h3>
 					
-					<h6>The following variables will be passed to your Play Call. Please provide values.</h6>
+					<h6>The following variables will be passed to your Playbook. Please provide values.</h6>
 					
-					<div class="input-group" ng-repeat="item in options">
+					<div class="input-group" ng-repeat="item in variables">
 						<span class="input-group-addon">{{ item.name }}</span>
 						<input type="text" class="form-control" ng-model="item.supplied_value"/>
 					</div>
