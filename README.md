@@ -59,7 +59,7 @@ to execute is called the "Coordinator".
   venv/bin/python motdable/manage.py runserver
   ```
   
-0. manage you players and playcalls via the api interface. login as the django admin to gain the ability to post new models. E.g.
+0. manage you hosts and playbooks via the api interface. login as the django admin to gain the ability to post new models. E.g.
   ```
   firefox|chromium http://localhost:8000/api
   ```

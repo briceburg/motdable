@@ -2,7 +2,7 @@ from __future__ import print_function
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from api.models import PlayCall, Player
+from api.models import Playbook, Host
 
 import subprocess, sys, json, os
 
@@ -17,9 +17,9 @@ def catchall(request):
 
 def execute(request):
     
-    options     = request.GET.get('options','{}')
-    playcall    = PlayCall.objects.get(pk=request.GET['playcallId'])
-    player      = Player.objects.get(pk=request.GET['playerId'])
+    variables   = request.GET.get('variables','{}')
+    playbook    = Playbook.objects.get(pk=request.GET['playbookId'])
+    host        = Host.objects.get(pk=request.GET['hostId'])
     
     if hasattr(sys, 'real_prefix'): 
         
@@ -27,18 +27,18 @@ def execute(request):
         inventory_file = sys.prefix + '/tmp.inventory' 
         f = open(inventory_file,'w')
         print('127.0.0.1', file=f)
-        print(player.hostname, file=f)
+        print(host.hostname, file=f)
         f.close()
         
         # write a temp playbook file, @todo: one-liner?
         playbook_file = sys.prefix + '/tmp.playbook' 
         f = open(playbook_file,'w')
-        print(playcall.playbook, file=f)
+        print(playbook.content, file=f)
         f.close() 
         
         # create extravars
-        extra_vars = json.loads(options)
-        extra_vars['host_group'] = player.hostname
+        extra_vars = json.loads(variables)
+        extra_vars['host_group'] = host.hostname
         
         env_vars = dict(os.environ)
         env_vars['ANSIBLE_HOST_KEY_CHECKING'] = 'False'
@@ -47,8 +47,8 @@ def execute(request):
         process = subprocess.Popen([
             sys.prefix + '/bin/ansible-playbook',
             '--inventory-file=' + inventory_file,
-            '--user=' + player.login_username,
-            '--private-key=' + player.private_key_file.path(),
+            '--user=' + host.login_username,
+            '--private-key=' + host.private_key_file.path(),
             '--extra-vars=' + json.dumps(extra_vars),
             playbook_file
         

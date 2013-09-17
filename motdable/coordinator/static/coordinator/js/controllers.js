@@ -2,42 +2,42 @@
 
 /* Controllers */
 
-function MainCtrl($scope, Players, PlayCalls, ExecutePlay) {
-	// populate player list from django rest-framework
-	Players.query(function(data){
-		$scope.players = data;
-		$scope.selectedPlayer = null;
+function MainCtrl($scope, Hosts, Playbooks, ExecutePlay) {
+	// populate host list from django rest-framework
+	Hosts.query(function(data){
+		$scope.hosts = data;
+		$scope.selectedHost = null;
 	});
 	
-	// populate playcall list from django rest-framework
-	PlayCalls.query(function(data){
-		$scope.playcalls = data;
-		$scope.selectedPlayCall = null;
+	// populate playbook list from django rest-framework
+	Playbooks.query(function(data){
+		$scope.playbooks = data;
+		$scope.selectedPlaybook = null;
 	});
 	
-	// multimethod for toggling selection of current player/playcall
-	$scope.selectItem = function(id, type, options){
+	// multimethod for toggling selection of current host/playbook
+	$scope.selectItem = function(id, type, variables){
 		var property = 'selected' + type;
 		$scope[property] = ($scope[property] == id) ? null : id;
 		
-		$scope.canExecute = ($scope.selectedPlayer && $scope.selectedPlayCall);
+		$scope.canExecute = ($scope.selectedHost && $scope.selectedPlaybook);
 		
-        if(type == 'PlayCall')
+        if(type == 'Playbook')
         {
-        	$scope.options = [];
+        	$scope.variables = [];
         	
         	if($scope[property])
         	{
-	        	angular.forEach(options, function(value, key){
+	        	angular.forEach(variables, function(value, key){
 	        		this.push({name: value, supplied_value: ''});
-	        	}, $scope.options);
+	        	}, $scope.variables);
         	}
         }
 	}
 	
-	// method for executing a playcall against a player
+	// method for executing a playbook against a host
 	$scope.execute = function(){
-		if(!$scope.canExecute) return alert('Please select a Player and Play Call first.');
+		if(!$scope.canExecute) return alert('Please select a Host and Playbook first.');
 		if($scope.isExecuting) return;
 		
 		$scope.isExecuting = true;
@@ -48,18 +48,18 @@ function MainCtrl($scope, Players, PlayCalls, ExecutePlay) {
 					response.data.output : response.data;
 		};
 		
-		// prepare options, we cannot use ng-repeat (key, value) + ng-model
+		// prepare variables, we cannot use ng-repeat (key, value) + ng-model
 		//  which would be more efficient: see http://jsfiddle.net/sirhc/z9cGm/
-		var options = {};
-		angular.forEach($scope.options, function(obj, key){
+		var variables = {};
+		angular.forEach($scope.variables, function(obj, key){
     		this[obj.name] = obj.supplied_value;
-    	}, options);
+    	}, variables);
 		
 		
 		ExecutePlay.get({
-			playerId: $scope.selectedPlayer,
-			playcallId: $scope.selectedPlayCall,
-			options: options
+			hostId:		$scope.selectedHost,
+			playbookId:	$scope.selectedPlaybook,
+			variables:	variables
 		})
 		// promise.then(successCallback, errorCallback)
 		.then(outputFunc, outputFunc);

@@ -4,11 +4,11 @@
 
 angular.module('coordinator.services', ['ngResource'])
 	.value('version', '0.1')
-	.factory('PlayCalls', function($resource){
-		return $resource('/api/playcalls/.json');
+	.factory('Playbooks', function($resource){
+		return $resource('/api/playbooks/.json');
 	})
-	.factory('Players', function($resource){
-		return $resource('/api/players/.json');
+	.factory('Hosts', function($resource){
+		return $resource('/api/hosts/.json');
 	})
 	.factory('ExecutePlay', function($http){
 		return {
