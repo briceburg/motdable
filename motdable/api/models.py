@@ -1,4 +1,5 @@
 from django.db import models
+from api.classes import PrivateKeyStorage
 
 
 class PlayCall(models.Model):
@@ -34,7 +35,7 @@ class Player(models.Model):
     owner = models.ForeignKey('auth.User', related_name='players')
     hostname = models.CharField(max_length=100, blank=True, default='')
     login_username = models.CharField(max_length=100, default='root')
-    login_private_key = models.TextField()
+    private_key_file = models.FileField(upload_to='keys', storage=PrivateKeyStorage())
     
 
 

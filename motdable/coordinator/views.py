@@ -36,14 +36,6 @@ def execute(request):
         print(playcall.playbook, file=f)
         f.close() 
         
-        # write a temp playbook file, @todo: private_key should be a file upload
-        key_file = sys.prefix + '/tmp.key'
-        os.chmod(key_file, 0600) 
-        with open(key_file, "w") as f:
-            os.chmod(key_file, 0400)
-            f.write(player.login_private_key)
-            f.close()
-        
         # create extravars
         extra_vars = json.loads(options)
         extra_vars['host_group'] = player.hostname
@@ -56,7 +48,7 @@ def execute(request):
             sys.prefix + '/bin/ansible-playbook',
             '--inventory-file=' + inventory_file,
             '--user=' + player.login_username,
-            '--private-key=' + key_file,
+            '--private-key=' + player.private_key_file.path(),
             '--extra-vars=' + json.dumps(extra_vars),
             playbook_file
         

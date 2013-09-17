@@ -8,7 +8,7 @@ class PlayerSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Player
-        fields = ('url', 'id', 'hostname', 'login_username', 'login_private_key', 'owner')
+        fields = ('url', 'id', 'hostname', 'login_username', 'private_key_file', 'owner')
         
         
 class PlayCallOptionSerializer(serializers.HyperlinkedModelSerializer):
