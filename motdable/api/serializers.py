@@ -1,14 +1,25 @@
 from rest_framework import serializers
 
-from api.models import Host, Playbook, PlaybookVariable
+from api.models import Host, HostCredential, Playbook, PlaybookVariable
 from django.contrib.auth.models import User
 
 
 class HostSerializer(serializers.HyperlinkedModelSerializer):
-
+    
+    credential = serializers.SlugRelatedField(slug_field='username', required=True)
+    
     class Meta:
         model = Host
-        fields = ('url', 'id', 'hostname', 'login_username', 'private_key_file', 'owner')
+        fields = ('url', 'id', 'hostname', 'credential', 'owner')
+
+        
+class HostCredentialSerializer(serializers.HyperlinkedModelSerializer):
+    
+    hosts = serializers.SlugRelatedField(many=True, slug_field='hostname', required=False)
+
+    class Meta:
+        model = HostCredential
+        fields = ('url', 'id', 'username', 'private_key_file', 'hosts', 'owner')
         
         
 class PlaybookVariableSerializer(serializers.HyperlinkedModelSerializer):

@@ -8,6 +8,7 @@ router = DefaultRouter()
 router.register(r'playbooks', views.PlaybookViewSet)
 router.register(r'playbookvars', views.PlaybookVariableViewSet)
 router.register(r'hosts', views.HostViewSet)
+router.register(r'hostcredentials', views.HostCredentialViewSet)
 router.register(r'users', views.UserViewSet)
 
 

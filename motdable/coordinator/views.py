@@ -44,8 +44,8 @@ def execute(request):
         process = subprocess.Popen([
             sys.prefix + '/bin/ansible-playbook',
             '--inventory-file=' + inventory_file.name,
-            '--user=' + host.login_username,
-            '--private-key=' + host.private_key_file.path,
+            '--user=' + host.credential.username,
+            '--private-key=' + host.credential.private_key_file.path,
             '--extra-vars=' + json.dumps(extra_vars),
             playbook_file.name
         

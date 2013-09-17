@@ -1,8 +1,8 @@
 from rest_framework import permissions
 from rest_framework import viewsets
 
-from api.models import Playbook, PlaybookVariable, Host
-from api.serializers import HostSerializer, PlaybookVariableSerializer, PlaybookSerializer, UserSerializer
+from api.models import Playbook, PlaybookVariable, Host, HostCredential
+from api.serializers import HostSerializer, HostCredentialSerializer, PlaybookVariableSerializer, PlaybookSerializer, UserSerializer
 from api.permissions import IsOwnerOrReadOnly
 
 from django.contrib.auth.models import User
@@ -75,16 +75,33 @@ class HostViewSet(viewsets.ModelViewSet):
     used to access it.
     
     See the hostcredentials endpoint in our Api Root for management.
-    
-    NOTE:
-      Hosts use ssh private keys for access. Please ensure these
-      are appropriately setup for users on the target host.
     """
     
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
     
     queryset = Host.objects.all()
     serializer_class = HostSerializer
+    
+    def pre_save(self, obj):
+        obj.owner = self.request.user
+        
+        
+class HostCredentialViewSet(viewsets.ModelViewSet):
+    """
+    This is a CRUD endpoint for HostCredentials.
+    
+    A username + private_key used to login to Hosts.
+    
+    Uses a many-to-many relationship so we may share credentials amongst host(s)
+    
+    NOTE: Please ensure the public key equivalent is added to the user's
+    authorized_keys file on your host(s).
+    """
+    
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly)
+    
+    queryset = HostCredential.objects.all()
+    serializer_class = HostCredentialSerializer
     
     def pre_save(self, obj):
         obj.owner = self.request.user
